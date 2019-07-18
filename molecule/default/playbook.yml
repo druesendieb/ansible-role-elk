@@ -7,7 +7,9 @@
     - name: Update apt cache.
       apt: update_cache=yes
       when: ansible_os_family == 'Debian'
+    - name: Apply dependancies
+      include_role:
+        name: lucasmaurice.ansible_role_docker
 
   roles:
-    - role: lucasmaurice.ansible_role_docker
     - role: elk
