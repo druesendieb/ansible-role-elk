@@ -24,11 +24,11 @@ galaxy_info:
         - bionic
 
   galaxy_tags:
-   - docker
-   - elasticsearch
-   - logstash
-   - kibana
-   - elk
+    - docker
+    - elasticsearch
+    - logstash
+    - kibana
+    - elk
 
   dependencies:
     - lucasmaurice.ansible_role_docker
