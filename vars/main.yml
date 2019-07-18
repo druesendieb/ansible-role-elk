@@ -1,0 +1,17 @@
+---
+# Convert vars into objects
+ELK_REGISTRIES:
+  elasticsearch: "{{ ELK_ELASTICSEARCH_REGISTRY }}"
+  kibana: "{{ ELK_KIBANA_REGISTRY }}"
+  logstash: "{{ ELK_LOGSTASH_REGISTRY }}"
+
+ELK_PLUGINS:
+  elasticsearch: "{{ ELK_ELASTICSEARCH_PLUGINS }}"
+  kibana: "{{ ELK_KIBANA_PLUGINS }}"
+  logstash: "{{ ELK_LOGSTASH_PLUGINS }}"
+
+# Services to install and enable:
+ELK_SERVICES:
+  - elasticsearch
+  - kibana
+  - logstash

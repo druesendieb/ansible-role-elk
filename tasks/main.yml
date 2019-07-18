@@ -1,0 +1,16 @@
+---
+- name: Create ELK files directories
+  file:
+    path: "{{ item }}"
+    mode: 0751
+    owner: root
+    recurse: true
+    state: directory
+  with_items:
+    - "{{ ELK_ROOT_LOCATION }}"
+    - "{{ ELK_ROOT_LOCATION }}/configs"
+    - "{{ ELK_ROOT_LOCATION }}/dockerfiles"
+    - "{{ ELK_ROOT_LOCATION }}/logs"
+
+- name: Build docker images
+  include: build_images.yml
