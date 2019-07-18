@@ -14,3 +14,6 @@
 
 - name: Build docker images
   include: build_images.yml
+
+- name: Create services containers
+  include: services.yml

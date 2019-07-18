@@ -1,0 +1,23 @@
+---
+# - name: restart elasticsearch
+#   systemd:
+#     name: "{{ ELK_ELASTICSEARCH_SERVICE_NAME }}.service"
+#     daemon_reload: true
+#     state: restarted
+#   listen: restart elasticsearch
+
+- name: restart elasticsearch
+  debug:
+    msg: "RESTARTED (not!)"
+  listen: restart elasticsearch
+
+- name: restart kibana
+  debug:
+    msg: "RESTARTED (not!)"
+  listen: restart kibana
+
+- name: restart logstash
+  debug:
+    msg: "RESTARTED (not!)"
+  listen: restart logstash
+# TODO: Make handlers workS!

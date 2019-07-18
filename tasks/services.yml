@@ -1,0 +1,98 @@
+---
+- name: Create logs directories
+  file:
+    path: "{{ ELK_ROOT_LOCATION }}/logs/{{ item }}"
+    mode: 0751
+    owner: root
+    recurse: true
+    state: directory
+  with_items: "{{ ELK_SERVICES }}"
+
+- name: Create elasticsearch service file
+  template:
+    dest: "{{ ELK_ROOT_LOCATION }}/configs/{{ item }}.yml"
+    src: "configs/{{ item }}.yml.j2"
+    mode: 0755
+    owner: root
+  with_items: "{{ ELK_SERVICES }}"
+
+- name: Create the network for elasticsearch
+  docker_network:
+    name: "{{ ELK_DOCKER_NETWORK }}"
+
+# ------------------------------------ ELASTICSEARCH ------------------------------------
+
+- name: Start the elasticsearch service.
+  docker_container:
+    recreate: true
+    state: started
+    name: "{{ ELK_ELASTICSEARCH_SERVICE_NAME }}"
+    hostname: "{{ ELK_ELASTICSEARCH_SERVICE_NAME }}"
+    image: "{{ ELK_ELASTICSEARCH_SERVICE_NAME }}"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - "{{ ELK_ROOT_LOCATION }}/configs/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro"
+      - elastic-data:/usr/share/elasticsearch/data
+    env:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ELASTIC_PASSWORD: "{{ ELK_ELASTISEARCH_PASSWORD }}"
+    ulimits:
+      - "memlock:-1:-1"
+      - "nofile:65536:65536"
+    networks:
+      - name: "{{ ELK_DOCKER_NETWORK }}"
+  notify: restart elasticsearch
+  when: ("elasticsearch" in ELK_SERVICES)
+  tags: molecule-notest
+
+# ---------------------------------------- KIBANA ----------------------------------------
+
+- name: Start the kibana service.
+  docker_container:
+    recreate: true
+    name: "{{ ELK_KIBANA_SERVICE_NAME }}"
+    hostname: "{{ ELK_KIBANA_SERVICE_NAME }}"
+    image: "{{ ELK_KIBANA_SERVICE_NAME }}"
+    ports:
+      - "5601:5601"
+    volumes:
+      - "{{ ELK_ROOT_LOCATION }}/configs/kibana.yml:/usr/share/kibana/config/kibana.yml:ro"
+    ulimits:
+      - "memlock:-1:-1"
+      - "nofile:65536:65536"
+    networks:
+      - name: "{{ ELK_DOCKER_NETWORK }}"
+  notify: restart kibana
+  when: ("kibana" in ELK_SERVICES)
+  tags: molecule-notest.
+
+# --------------------------------------- LOGSTASH ---------------------------------------
+
+- name: Start the logstash service.
+  docker_container:
+    recreate: true
+    name: "{{ ELK_LOGSTASH_SERVICE_NAME }}"
+    hostname: "{{ ELK_LOGSTASH_SERVICE_NAME }}"
+    image: "{{ ELK_LOGSTASH_SERVICE_NAME }}"
+    ports:
+      - "5000:5000"
+      - "9600:9600"
+    volumes:
+      - "{{ ELK_ROOT_LOCATION }}/configs/logstash.yml:/usr/share/logstash/config/logstash.yml:ro"
+    ulimits:
+      - "memlock:-1:-1"
+      - "nofile:65536:65536"
+    networks:
+      - name: "{{ ELK_DOCKER_NETWORK }}"
+  notify: restart logstash
+  when: ("logstash" in ELK_SERVICES)
+  tags: molecule-notest.
+
+# --------------------------------------- SERVICES ---------------------------------------
+# TODO: Create services from containers.
+# TODO: Generate logstash configs.
+# TODO: Parameters for Ports
+# TODO: Add authentication
+# TODO: 

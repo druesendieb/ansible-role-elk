@@ -23,3 +23,6 @@ ELK_DOCKER_NETWORK: elk
 
 # Root directory of elk stack files
 ELK_ROOT_LOCATION: /opt/elk
+
+# Elasticsearch Password
+ELK_ELASTISEARCH_PASSWORD: changeme
