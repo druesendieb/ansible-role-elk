@@ -2,13 +2,13 @@
 - name: Create logs directories
   file:
     path: "{{ ELK_ROOT_LOCATION }}/logs/{{ item }}"
-    mode: 0751
+    mode: 0755
     owner: root
     recurse: true
     state: directory
   with_items: "{{ ELK_SERVICES }}"
 
-- name: Create elasticsearch service file
+- name: Create elk configuration files
   template:
     dest: "{{ ELK_ROOT_LOCATION }}/configs/{{ item }}.yml"
     src: "configs/{{ item }}.yml.j2"
@@ -22,7 +22,7 @@
 
 # ------------------------------------ ELASTICSEARCH ------------------------------------
 
-- name: Start the elasticsearch service.
+- name: Create the elasticsearch container.
   docker_container:
     recreate: true
     state: started
@@ -41,6 +41,7 @@
     ulimits:
       - "memlock:-1:-1"
       - "nofile:65536:65536"
+    purge_networks: true
     networks:
       - name: "{{ ELK_DOCKER_NETWORK }}"
   notify: restart elasticsearch
@@ -49,7 +50,7 @@
 
 # ---------------------------------------- KIBANA ----------------------------------------
 
-- name: Start the kibana service.
+- name: Create the kibana container.
   docker_container:
     recreate: true
     name: "{{ ELK_KIBANA_SERVICE_NAME }}"
@@ -62,6 +63,7 @@
     ulimits:
       - "memlock:-1:-1"
       - "nofile:65536:65536"
+    purge_networks: true
     networks:
       - name: "{{ ELK_DOCKER_NETWORK }}"
   notify: restart kibana
@@ -70,7 +72,7 @@
 
 # --------------------------------------- LOGSTASH ---------------------------------------
 
-- name: Start the logstash service.
+- name: Create the logstash container.
   docker_container:
     recreate: true
     name: "{{ ELK_LOGSTASH_SERVICE_NAME }}"
@@ -84,6 +86,7 @@
     ulimits:
       - "memlock:-1:-1"
       - "nofile:65536:65536"
+    purge_networks: true
     networks:
       - name: "{{ ELK_DOCKER_NETWORK }}"
   notify: restart logstash
@@ -91,6 +94,28 @@
   tags: molecule-notest.
 
 # --------------------------------------- SERVICES ---------------------------------------
+
+- name: Create elk services files.
+  template:
+    dest: "/etc/systemd/system/{{ ELK_SERVICES_NAMES[item] }}.service"
+    src: "service.j2"
+    mode: 0664
+  vars:
+    SERVICE: "{{ ELK_SERVICES_NAMES[item] }}"
+  notify: restart elk
+  with_items: "{{ ELK_SERVICES }}"
+  when: ansible_service_mgr == 'systemd'
+
+- name: Enable elk services.
+  service:
+    name: "{{ ELK_SERVICES_NAMES[item] }}.service"
+    state: started
+    enabled: true
+  with_items: "{{ ELK_SERVICES }}"
+  when: ELK_SERVICES_ENABLED | bool
+  changed_when: false
+  tags: molecule-notest
+
 # TODO: Create services from containers.
 # TODO: Generate logstash configs.
 # TODO: Parameters for Ports
