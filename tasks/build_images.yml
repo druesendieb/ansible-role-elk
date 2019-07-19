@@ -2,7 +2,7 @@
 - name: Create Dockerfiles directories
   file:
     path: "{{ ELK_ROOT_LOCATION }}/dockerfiles/{{ item }}"
-    mode: 0751
+    mode: 0755
     owner: root
     recurse: true
     state: directory
@@ -12,7 +12,7 @@
   template:
     src: "Dockerfile.j2"
     dest: "{{ ELK_ROOT_LOCATION }}/dockerfiles/{{ item }}/Dockerfile"
-    mode: 0751
+    mode: 0755
     owner: root
   vars:
     SERVICE: "{{ item }}"
