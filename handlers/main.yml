@@ -20,4 +20,9 @@
   debug:
     msg: "RESTARTED (not!)"
   listen: restart logstash
+
+- name: restart elk
+  debug:
+    msg: "ALL RESTARTED (not!)"
+  listen: restart elk
 # TODO: Make handlers workS!
