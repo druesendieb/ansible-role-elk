@@ -26,3 +26,23 @@ ELK_ROOT_LOCATION: /opt/elk
 
 # Elasticsearch Password
 ELK_ELASTISEARCH_PASSWORD: changeme
+
+
+# ================= LOGSTASH CONFIG =================
+
+ELK_LOGSTASH_BEATS_LISTEN_PORT: 5044
+
+ELK_LOGSTASH_INPUTS: []
+  # - type: syslog-proxmox
+  #   port: 5140
+  #   protocol: udp
+  # - type: syslog-pf
+  #   port: 5141
+  #   protocol: udp
+  # - type: syslog-cisco
+  #   port: 1514
+  #   protocol: udp
+
+ELK_LOGSTASH_SSL: false    
+ELK_LOGSTASH_SSL_CERTIFICATE_FILE: ""
+ELK_LOGSTASH_SSL_KEY_FILE: ""
