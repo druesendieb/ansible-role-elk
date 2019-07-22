@@ -1,0 +1,17 @@
+input {
+  beats {
+    port => {{ ELK_LOGSTASH_BEATS_LISTEN_PORT }}
+{% if ELK_LOGSTASH_SSL | bool %}
+    ssl => true
+    ssl_certificate => "{{ ELK_ROOT_LOCATION }}/ssl/{{ ELK_LOGSTASH_SSL_CERTIFICATE_FILE | basename }}"
+    ssl_key => "{{ ELK_ROOT_LOCATION }}/ssl/{{ ELK_LOGSTASH_SSL_KEY_FILE | basename }}"
+    ssl_verify_mode => "force_peer"
+{% endif %}
+  }
+{% for item in ELK_LOGSTASH_INPUTS %}
+  {{ item.protocol }}{
+    type => "{{ item.type }}"
+    port => {{ item.port }}
+  }
+{% endfor %}
+}

@@ -1,0 +1,8 @@
+output {
+  # Something went wrong with the grok parsing, don't discard the messages though
+  if "_grokparsefailure" in [tags] {
+    file {
+      path => "/tmp/fail-%{type}-%{+YYYY.MM.dd}.log"
+    }
+  }
+}
