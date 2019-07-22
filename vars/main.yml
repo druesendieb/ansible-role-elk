@@ -20,3 +20,6 @@ ELK_SERVICES:
   - elasticsearch
   - kibana
   - logstash
+
+ELK_LOGSTASH_PORTS:
+  - "{{ ELK_LOGSTASH_BEATS_LISTEN_PORT }}:{{ ELK_LOGSTASH_BEATS_LISTEN_PORT }}"

@@ -8,14 +8,6 @@
     state: directory
   with_items: "{{ ELK_SERVICES }}"
 
-- name: Create elk configuration files
-  template:
-    dest: "{{ ELK_ROOT_LOCATION }}/configs/{{ item }}.yml"
-    src: "configs/{{ item }}.yml.j2"
-    mode: 0755
-    owner: root
-  with_items: "{{ ELK_SERVICES }}"
-
 - name: Create the network for elasticsearch
   docker_network:
     name: "{{ ELK_DOCKER_NETWORK }}"
@@ -71,6 +63,11 @@
   tags: molecule-notest.
 
 # --------------------------------------- LOGSTASH ---------------------------------------
+- name: Generate port list for Logstash Inputs.
+  include: ports.yml
+  vars: 
+    to_listen: "{{ item }}"
+  with_items: "{{ ELK_LOGSTASH_INPUTS }}"
 
 - name: Create the logstash container.
   docker_container:
@@ -78,11 +75,11 @@
     name: "{{ ELK_LOGSTASH_SERVICE_NAME }}"
     hostname: "{{ ELK_LOGSTASH_SERVICE_NAME }}"
     image: "{{ ELK_LOGSTASH_SERVICE_NAME }}"
-    ports:
-      - "5000:5000"
-      - "9600:9600"
+    ports: "{{ ELK_LOGSTASH_PORTS }}"
     volumes:
       - "{{ ELK_ROOT_LOCATION }}/configs/logstash.yml:/usr/share/logstash/config/logstash.yml:ro"
+      - "{{ ELK_ROOT_LOCATION }}/logstash_patterns:/usr/share/logstash/patterns:ro"
+      - "{{ ELK_ROOT_LOCATION }}/logstash_pipelines:/usr/share/logstash/pipeline:ro"
     ulimits:
       - "memlock:-1:-1"
       - "nofile:65536:65536"
@@ -91,8 +88,7 @@
       - name: "{{ ELK_DOCKER_NETWORK }}"
   notify: restart logstash
   when: ("logstash" in ELK_SERVICES)
-  tags: molecule-notest.
-
+  tags: molecule-notest
 # --------------------------------------- SERVICES ---------------------------------------
 
 - name: Create elk services files.
@@ -116,8 +112,8 @@
   changed_when: false
   tags: molecule-notest
 
-# TODO: Create services from containers.
-# TODO: Generate logstash configs.
+# TODO: Generate logstash configs (done).
+# TODO: Generate logstash configs from playbooks.
 # TODO: Parameters for Ports
 # TODO: Add authentication
 # TODO: 
