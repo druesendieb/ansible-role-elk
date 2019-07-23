@@ -80,6 +80,7 @@
       - "{{ ELK_ROOT_LOCATION }}/configs/logstash.yml:/usr/share/logstash/config/logstash.yml:ro"
       - "{{ ELK_ROOT_LOCATION }}/logstash_patterns:{{ ELK_LOGSTASH_DOCKER_PATTERNS_DIR }}:ro"
       - "{{ ELK_ROOT_LOCATION }}/logstash_pipelines:/usr/share/logstash/pipeline:ro"
+      - logstash-data:/usr/share/logstash/data
     ulimits:
       - "memlock:-1:-1"
       - "nofile:65536:65536"
