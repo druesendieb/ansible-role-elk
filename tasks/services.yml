@@ -112,8 +112,5 @@
   changed_when: false
   tags: molecule-notest
 
-# TODO: Generate logstash configs (done).
-# TODO: Generate logstash configs from playbooks.
-# TODO: Parameters for Ports
 # TODO: Add authentication
-# TODO: 
+# TODO: Make idempotent

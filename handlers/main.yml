@@ -34,4 +34,3 @@
   with_items: "{{ ELK_SERVICES }}"
   tags: molecule-notest
   listen: restart elk
-# TODO: Make handlers workS!
