@@ -9,10 +9,4 @@ input {
     ssl_verify_mode => "force_peer"
 {% endif %}
   }
-{% for item in ELK_LOGSTASH_INPUTS %}
-  {{ item.protocol }}{
-    type => "{{ item.type }}"
-    port => {{ item.port }}
-  }
-{% endfor %}
 }
