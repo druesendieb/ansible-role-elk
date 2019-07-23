@@ -78,7 +78,7 @@
     ports: "{{ ELK_LOGSTASH_PORTS }}"
     volumes:
       - "{{ ELK_ROOT_LOCATION }}/configs/logstash.yml:/usr/share/logstash/config/logstash.yml:ro"
-      - "{{ ELK_ROOT_LOCATION }}/logstash_patterns:/usr/share/logstash/patterns:ro"
+      - "{{ ELK_ROOT_LOCATION }}/logstash_patterns:{{ ELK_LOGSTASH_DOCKER_PATTERNS_DIR }}:ro"
       - "{{ ELK_ROOT_LOCATION }}/logstash_pipelines:/usr/share/logstash/pipeline:ro"
     ulimits:
       - "memlock:-1:-1"
