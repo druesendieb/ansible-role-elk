@@ -7,20 +7,46 @@
     owner: root
   with_items: "{{ ELK_SERVICES }}"
 
-- name: Create logstash patterns configuration files
+- name: Create base logstash pipelines configuration files
   template:
     src: "{{ item }}"
     dest: "{{ ELK_ROOT_LOCATION }}/logstash_pipelines/{{ item | basename | regex_replace('.j2','') }}"
     mode: 0755
+    owner: root
   notify: restart logstash
   with_fileglob:
-    - templates/logstash_pipelines/*.j2
+    - templates/logstash_pipelines/*.conf.j2"
 
-- name: Create logstash patterns configuration files
+- name: Create base logstash patterns configuration files
   template:
     src: "{{ item }}"
     dest: "{{ ELK_ROOT_LOCATION }}/logstash_patterns/{{ item | basename | regex_replace('.j2','') }}"
     mode: 0755
+    owner: root
   notify: restart logstash
   with_fileglob:
-    - templates/logstash_patterns/*.j2
+    - templates/logstash_patterns/*.grok.j2"
+
+- name: Create logstash pipelines configuration files from inventory
+  template:
+    src: "{{ item }}"
+    dest: "{{ ELK_ROOT_LOCATION }}/logstash_pipelines/{{ item | basename | regex_replace('.j2','') }}"
+    mode: 0755
+    owner: root
+  notify: restart logstash
+  when: ELK_LOGSTASH_PIPELINES_DIR != ""
+  with_fileglob:
+    - "{{ ELK_LOGSTASH_PIPELINES_DIR }}/*.conf.j2"
+    - "{{ ELK_LOGSTASH_PIPELINES_DIR }}/*.conf"
+
+- name: Create logstash patterns configuration files from inventory
+  template:
+    src: "{{ item }}"
+    dest: "{{ ELK_ROOT_LOCATION }}/logstash_patterns/{{ item | basename | regex_replace('.j2','') }}"
+    mode: 0755
+    owner: root
+  notify: restart logstash
+  when: ELK_LOGSTASH_PATTERNS_DIR != ""
+  with_fileglob:
+    - "{{ ELK_LOGSTASH_PATTERNS_DIR }}/*.grok.j2"
+    - "{{ ELK_LOGSTASH_PATTERNS_DIR }}/*.grok"
