@@ -1,5 +1,7 @@
 ---
 galaxy_info:
+  role_name: elk
+
   author: Lucas Maurice
   description: This is a role for install a dockerized elastic stack.
   company: Effenco
@@ -31,4 +33,5 @@ galaxy_info:
     - elk
 
   dependencies:
-    - lucasmaurice.ansible_role_docker
+    - geerlingguy.pip
+    - geerlingguy.docker

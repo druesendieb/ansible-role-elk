@@ -34,7 +34,7 @@
     mode: 0755
     owner: root
   notify: restart logstash
-  when: ELK_LOGSTASH_PIPELINES_DIR != ""
+  when: ELK_LOGSTASH_PIPELINES_DIR | length > 0
   with_fileglob:
     - "{{ ELK_LOGSTASH_PIPELINES_DIR }}/*.conf.j2"
     - "{{ ELK_LOGSTASH_PIPELINES_DIR }}/*.conf"
@@ -46,7 +46,7 @@
     mode: 0755
     owner: root
   notify: restart logstash
-  when: ELK_LOGSTASH_PATTERNS_DIR != ""
+  when: ELK_LOGSTASH_PATTERNS_DIR | length > 0
   with_fileglob:
     - "{{ ELK_LOGSTASH_PATTERNS_DIR }}/*.grok.j2"
     - "{{ ELK_LOGSTASH_PATTERNS_DIR }}/*.grok"
