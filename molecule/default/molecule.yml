@@ -32,7 +32,7 @@ scenario:
     - converge
     - idempotence
     # - verify
-    - destroy
+    # - destroy
 verifier:
   name: testinfra
   lint:
