@@ -65,7 +65,7 @@
 # --------------------------------------- LOGSTASH ---------------------------------------
 - name: Generate port list for Logstash Inputs.
   include: ports.yml
-  vars: 
+  vars:
     to_listen: "{{ item }}"
   with_items: "{{ ELK_LOGSTASH_INPUTS }}"
 

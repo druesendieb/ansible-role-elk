@@ -33,11 +33,11 @@ ELK_ELASTISEARCH_PASSWORD: changeme
 ELK_LOGSTASH_BEATS_LISTEN_PORT: 5044
 
 ELK_LOGSTASH_INPUTS: []
-  # - type: syslog-pf
-  #   port: 5141
-  #   protocol: udp
+# - type: syslog-pf
+#   port: 5141
+#   protocol: udp
 
-ELK_LOGSTASH_SSL: false    
+ELK_LOGSTASH_SSL: false
 ELK_LOGSTASH_SSL_CERTIFICATE_FILE: ""
 ELK_LOGSTASH_SSL_KEY_FILE: ""
 
