@@ -39,6 +39,7 @@
   notify: restart elasticsearch
   when: ("elasticsearch" in ELK_SERVICES)
   tags: molecule-notest
+  changed_when: false
 
 # ---------------------------------------- KIBANA ----------------------------------------
 
@@ -61,6 +62,7 @@
   notify: restart kibana
   when: ("kibana" in ELK_SERVICES)
   tags: molecule-notest.
+  changed_when: false
 
 # --------------------------------------- LOGSTASH ---------------------------------------
 - name: Generate port list for Logstash Inputs.
@@ -90,6 +92,7 @@
   notify: restart logstash
   when: ("logstash" in ELK_SERVICES)
   tags: molecule-notest
+  changed_when: false
 # --------------------------------------- SERVICES ---------------------------------------
 
 - name: Create elk services files.
