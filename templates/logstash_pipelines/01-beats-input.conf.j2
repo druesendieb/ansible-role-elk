@@ -2,6 +2,7 @@
 input {
   beats {
     port => {{ ELK_LOGSTASH_BEATS_LISTEN_PORT }}
+    tags => ["beats_input"]
 {% if ELK_LOGSTASH_SSL | bool %}
     ssl => true
     ssl_certificate => "{{ ELK_ROOT_LOCATION }}/ssl/{{ ELK_LOGSTASH_SSL_CERTIFICATE_FILE | basename }}"
