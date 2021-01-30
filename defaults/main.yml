@@ -1,9 +1,9 @@
 ---
 # Docker registries and version used to create the services
-ELK_ELASTICSEARCH_REGISTRY: docker.elastic.co/elasticsearch/elasticsearch-oss
-ELK_KIBANA_REGISTRY: docker.elastic.co/kibana/kibana-oss
-ELK_LOGSTASH_REGISTRY: docker.elastic.co/logstash/logstash-oss
-ELK_VERSION: 7.2.0
+ELK_ELASTICSEARCH_REGISTRY: docker.elastic.co/elasticsearch/elasticsearch
+ELK_KIBANA_REGISTRY: docker.elastic.co/kibana/kibana
+ELK_LOGSTASH_REGISTRY: docker.elastic.co/logstash/logstash
+ELK_VERSION: 7.10.2
 
 # Plugins to install
 ELK_ELASTICSEARCH_PLUGINS: []
